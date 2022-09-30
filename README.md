@@ -38,7 +38,8 @@ bot_token=1234567890:AAA-AaA1aaa1AAaaAa1a1AAAAA-a1aa1-Aa
 ```ini
 -1001635530740
 ```
-* `-100nnnnnnnnnn` channel id, leave -100 at the beginning, and then change the id to your own. You can find it through this bot: [Test Attach](https://t.me/asmico_attach_bot). *
+* `-100nnnnnnnnnn` channel id, leave -100 at the beginning, and then change the id to your own. You can find it through this bot: [Test Attach](https://t.me/asmico_attach_bot).
+
 **Install [SQLiteStudio](https://sqlitestudio.pl/) and open file `data/db.sql` and change the creator's id to your own so that you have access to the admin panel**
 
 ## Running
