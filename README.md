@@ -29,6 +29,7 @@ $ cd Echogram
 
 ## Configuring
 **Open `data/config.ini` configuration file with text editor and set the token:**
+
 * `bot_token` is token for your Telegram bot. You can get it here: [BotFather](https://t.me/BotFather)
 ```ini
 bot_token=1234567890:AAA-AaA1aaa1AAaaAa1a1AAAAA-a1aa1-Aa
