@@ -34,13 +34,12 @@ $ cd Echogram
 bot_token=1234567890:AAA-AaA1aaa1AAaaAa1a1AAAAA-a1aa1-Aa
 ```
 
-**Open `handlers/users.py` and change the channel id for logs on line `189`**
-**Open `handlers/admins.py` and change the channel id for logs on line `117, 120, 233`**
+**Open `handlers/users.py & admins.py` and change the channel id for logs on line `189` & `117, 120, 233`**
 ```ini
 -1001635530740
 ```
-* `-100nnnnnnnnnn` channel id, leave -100 at the beginning, and then change the id to your own. You can find it through this bot: [Test Attach](https://t.me/asmico_attach_bot).
-**Install [SQLiteStudio](https://sqlitestudio.pl/) and change the creator's id to your own so that you have access to the admin panel**
+* `-100nnnnnnnnnn` channel id, leave -100 at the beginning, and then change the id to your own. You can find it through this bot: [Test Attach](https://t.me/asmico_attach_bot). *
+**Install [SQLiteStudio](https://sqlitestudio.pl/) and open file `data/db.sql` and change the creator's id to your own so that you have access to the admin panel**
 
 ## Running
 ### Using Python
