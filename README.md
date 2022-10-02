@@ -27,6 +27,7 @@ bot_token=0000000000:0000000000000000000000000000000000
 ```
 
 **Open `handlers/users.py` and change the channel id for logs on line `189`**
+
 **Open `handlers/admins.py` and change the channel id for logs on line `117, 120, 233`**
 ```ini
 -100nnnnnnnnnn
