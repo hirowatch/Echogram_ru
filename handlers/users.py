@@ -186,7 +186,7 @@ async def any(message: Message):
 		await bot.pin_chat_message(ims.chat.id, ims.message_id)
 		await bot.unpin_chat_message(ims.chat.id, ims.message_id)
 		try:
-			await bot.send_message(-1001635530740,
+			await bot.send_message(-100nnnnnnnnnn,
 				f"#FLOOD\n<b>Юзер:</b> <a href='{get_mention(message.chat)}'>{message.chat.full_name}</a>"
 			)
 		except: pass

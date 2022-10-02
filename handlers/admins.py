@@ -114,10 +114,10 @@ async def purge(message: Message):
 
 	try:
 		USER = await bot.get_chat(user_id)
-		await bot.send_message(-1001635530740,
+		await bot.send_message(-100nnnnnnnnnn,
 			f"#PURGE\n<b>Админ:</b> <a href='{get_mention(mj.chat)}'>{mj.chat.full_name}</a>\n<b>Причина:</b> {'null' if not reason else reason}\n<b>Юзер:</b> <a href='{get_mention(USER)}'>{USER.full_name}</a>\n<b>Сообщение:</b>"
 		)
-		await bot.forward_message(chat_id=-1001635530740, from_chat_id=user_id, message_id=get_reply_id(replies, user_id))
+		await bot.forward_message(chat_id=-100nnnnnnnnnn, from_chat_id=user_id, message_id=get_reply_id(replies, user_id))
 	except: pass
 
 	ims = await bot.send_message(user_id, f"Твоё сообщение удалено" + (f" по причине: <code>{reason}</code>" if reason else ""), reply_to_message_id=reply_msg_id, reply_markup=keyboard)
@@ -230,7 +230,7 @@ async def mute(message: Message):
 
 	try:
 		USER = await bot.get_chat(sender_id)
-		await bot.send_message(-1001635530740,
+		await bot.send_message(-100nnnnnnnnnn,
 			f"#MUTE\n<b>Админ:</b> <a href='{get_mention(message.chat)}'>{message.chat.full_name}</a>\n<b>Причина:</b> {'null' if not reason else reason}\n<b>Юзер:</b> <a href='{get_mention(USER)}'>{USER.full_name}</a>\n<b>Время:</b> {duration}"
 		)
 	except: pass
