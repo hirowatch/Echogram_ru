@@ -14,14 +14,14 @@ MODIFIERS = {
 def parse_timedelta(value: str):
 	match = LINE_PATTERN.match(value)
 	if not match:
-		raise Exception("Неверный формат времени")
+		raise Exception("Неправильний формат часу")
 	try:
 		result = datetime.timedelta()
 		for match in PATTERN.finditer(value):
 			value, mod = match.groups()
 			result += int(value) * MODIFIERS[mod]
 	except:
-		raise Exception("Значение слишком велико")
+		raise Exception("Значення занадто велике")
 	return result
 
 def get_duration_and_reason(args: str):

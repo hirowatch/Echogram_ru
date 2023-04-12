@@ -15,31 +15,31 @@ def get_mention(user):
 @dp.message_handler(state=States.setnick, content_types="text")
 async def setnick(message, state):
 	if len(message.text) > 16:
-		return await message.reply("Нельзя больше чем 16 символов")
+		return await message.reply("Не можна більше ніж 16 символів")
 	haha = Users.get(Users.id==message.chat.id).name
 	Users.update(name=message.text).where(Users.id==message.chat.id).execute()
 	await state.finish()
 	if haha:
-		await message.reply("Ник изменен")
+		await message.reply("Нік змінено")
 	else:
-		await message.reply("Ник установлен")
+		await message.reply("Нік встановлено")
 
 @dp.callback_query_handler(text="nick")
 async def nick(call: CallbackQuery):
-	await call.answer("Это кастомный ник!\nВведи: /nick", show_alert=True)
+	await call.answer("Це кастомний нік!\nВведи: /nick", show_alert=True)
 
 @dp.message_handler(commands=["rules"])
 async def rules(message: Message):
 	keyboard = InlineKeyboardMarkup(row_width=2)
-	pinushes = [("Дeтcкoe пopнo", "ban"), ("Расчленёнка", "mute"), ("Жёсткое 18+", "purge"), ("Зоофилия", "mute"), ("Флуд/Спам", "mute"), ("Реклама", "purge")]
+	pinushes = [("Дитяче порно", "ban"), ("Розчленування", "mute"), ("Жорстке 18+", "purge"), ("Зоофілія", "mute"), ("Флуд/Спам", "mute"), ("Реклама", "purge")]
 	for wtf, pinush in pinushes:
 		keyboard.add(InlineKeyboardButton(wtf, callback_data="n"), InlineKeyboardButton(pinush, callback_data="n"))
-	await message.reply("Правила бота:", reply_markup=keyboard)
+	await message.reply("Умовні правила бота:", reply_markup=keyboard)
     
 @dp.message_handler(commands=["cmd"])
 async def rules(message: Message):
 	keyboard = InlineKeyboardMarkup(row_width=2)
-	pinushes = [("/start", "Запуск бота"), ("/rules", "Правила"), ("/nick", "Настройки ника"), ("/stats", "Статистика"), ("/admincmd", "Админ команды")]
+	pinushes = [("/start", "Запуск бота"), ("/rules", "Правила"), ("/nick", "Налаштування ніка"), ("/stats", "Статистика"), ("/admincmd", "Адмін команди")]
 	for wtf, pinush in pinushes:
 		keyboard.add(InlineKeyboardButton(wtf, callback_data="n"), InlineKeyboardButton(pinush, callback_data="n"))
 	await message.reply("Список команд:", reply_markup=keyboard)
@@ -47,32 +47,32 @@ async def rules(message: Message):
 @dp.message_handler(commands=["admincmd"])
 async def rules(message: Message):
 	keyboard = InlineKeyboardMarkup(row_width=2)
-	pinushes = [("/admin", "Админ панель"), ("/uid", "ID юзера"), ("/promote", "/demote"), ("/mute", "/unmute"), ("/purge", "Очистка"), ("/ban", "/unban")]
+	pinushes = [("/admin", "Адмін панель"), ("/uid", "ID юзера"), ("/promote", "/demote"), ("/mute", "/unmute"), ("/purge", "Очищення"), ("/ban", "/unban")]
 	for wtf, pinush in pinushes:
 		keyboard.add(InlineKeyboardButton(wtf, callback_data="n"), InlineKeyboardButton(pinush, callback_data="n"))
-	await message.reply("Список команд для администраторов:", reply_markup=keyboard)
+	await message.reply("Список команд для адміністраторів:", reply_markup=keyboard)
 
 @dp.message_handler(commands=["stats"])
 async def stats(message: Message):
 	users = Users.select()
-	await message.reply(f"Юзеров бота: <code>{len(users)}</code>")
+	await message.reply(f"Юзерів бота: <code>{len(users)}</code>")
     
 @dp.message_handler(commands=["help"])
 async def help(message: Message):
-	await message.reply('Я буду отправлять твои сообщения всем юзерам.\n/cmd - список команд\n\n<a href="https://github.com/onilyxe/echogram">Исходный код</a>', parse_mode="HTML")
+	await message.reply('Я буду надсилати твої повідомлення всім юзерам.\n/cmd - список команд', parse_mode="HTML")
 
 @dp.callback_query_handler(text="nick:back")
 async def back_back(call):
 	message = call.message
 	keyboard = InlineKeyboardMarkup()
-	keyboard.add(InlineKeyboardButton("Установить" if not Users.get(Users.id==message.chat.id).name else "Изменить", callback_data="nick:setup"), InlineKeyboardButton("Удалить", callback_data="nick:del"))
+	keyboard.add(InlineKeyboardButton("Встановити" if not Users.get(Users.id==message.chat.id).name else "Змінити", callback_data="nick:setup"), InlineKeyboardButton("Видалити", callback_data="nick:del"))
 	keyboard.add(
-		InlineKeyboardButton("Посмотреть",  callback_data="nick:view"),
+		InlineKeyboardButton("Подивитися",  callback_data="nick:view"),
 		InlineKeyboardButton(
-			f'Упоминание {"✅" if Users.get(Users.id==message.chat.id).tag else "❌"}',
+			f'Згадка {"✅" if Users.get(Users.id==message.chat.id).tag else "❌"}',
 			callback_data="nick:tag"
 		))
-	await message.edit_text("Панель управления ником:", reply_markup=keyboard)
+	await message.edit_text("Панель керування ніком:", reply_markup=keyboard)
 
 @dp.callback_query_handler(text="nick:tag")
 async def nick_tag(call: CallbackQuery):
@@ -82,19 +82,19 @@ async def nick_tag(call: CallbackQuery):
 	else:
 		Users.update(tag=True).where(Users.id==message.chat.id).execute()
 	keyboard = InlineKeyboardMarkup()
-	keyboard.add(InlineKeyboardButton("Установить" if not Users.get(Users.id==message.chat.id).name else "Изменить", callback_data="nick:setup"), InlineKeyboardButton("Удалить", callback_data="nick:del"))
+	keyboard.add(InlineKeyboardButton("Встановити" if not Users.get(Users.id==message.chat.id).name else "Змінити", callback_data="nick:setup"), InlineKeyboardButton("Видалити", callback_data="nick:del"))
 	keyboard.add(
-		InlineKeyboardButton("Посмотреть",  callback_data="nick:view"),
+		InlineKeyboardButton("Подивитися",  callback_data="nick:view"),
 		InlineKeyboardButton(
-			f'Упоминание {"✅" if Users.get(Users.id==message.chat.id).tag else "❌"}',
+			f'Згадка {"✅" if Users.get(Users.id==message.chat.id).tag else "❌"}',
 			callback_data="nick:tag"
 		))
-	await message.edit_text("Панель управления ником:", reply_markup=keyboard)
+	await message.edit_text("Панель керування ніком:", reply_markup=keyboard)
 	await call.answer("OK")
 
 @dp.callback_query_handler(text="nick:setup")
 async def nicksetup(call):
-	await call.message.answer("Введи ник:")
+	await call.message.answer("Введи нік:")
 	await States.setnick.set()
 
 @dp.callback_query_handler(text="nick:del")
@@ -103,9 +103,9 @@ async def nickdel(call):
 	keyb = InlineKeyboardMarkup().add(InlineKeyboardButton("Назад", callback_data="nick:back"))
 
 	if not Users.get(Users.id==message.chat.id).name:
-		return await message.edit_text("У тебя и не было ника", reply_markup=keyb)
+		return await message.edit_text("У тебе й не було ніку", reply_markup=keyb)
 	Users.update(name=None).where(Users.id==message.chat.id).execute()
-	await message.edit_text("Ник удалён", reply_markup=keyb)
+	await message.edit_text("Нік видалено", reply_markup=keyb)
 
 @dp.callback_query_handler(text="nick:view")
 async def viewnick(call):
@@ -113,27 +113,27 @@ async def viewnick(call):
 
 	if Users.get(Users.id==call.message.chat.id).name:
 		name = Users.get(Users.id==call.message.chat.id).name
-		await call.message.edit_text(f"Твой ник: <code>{name}</code>", reply_markup=keyb)
+		await call.message.edit_text(f"Твій нік: <code>{name}</code>", reply_markup=keyb)
 	else:
-		await call.message.edit_text("У тебя нет ника", reply_markup=keyb)
+		await call.message.edit_text("У тебе немає ніку", reply_markup=keyb)
 
 @dp.message_handler(commands=["nick"])
 async def nick(message: Message):
 	keyboard = InlineKeyboardMarkup()
-	keyboard.add(InlineKeyboardButton("Установить" if not Users.get(Users.id==message.chat.id).name else "Изменить", callback_data="nick:setup"), InlineKeyboardButton("Удалить", callback_data="nick:del"))
+	keyboard.add(InlineKeyboardButton("Встановити" if not Users.get(Users.id==message.chat.id).name else "Змінити", callback_data="nick:setup"), InlineKeyboardButton("Видалити", callback_data="nick:del"))
 	keyboard.add(
-		InlineKeyboardButton("Посмотреть",  callback_data="nick:view"),
+		InlineKeyboardButton("Подивитися",  callback_data="nick:view"),
 		InlineKeyboardButton(
-			f'Упоминание {"✅" if Users.get(Users.id==message.chat.id).tag else "❌"}',
+			f'Згадка {"✅" if Users.get(Users.id==message.chat.id).tag else "❌"}',
 			callback_data="nick:tag"
 		))
-	await message.reply("Панель управления ником:", reply_markup=keyboard)
+	await message.reply("Панель керування ніком:", reply_markup=keyboard)
 
 @dp.message_handler(commands=["start"])
 async def hello(message: Message):
 	if not Users.select().where(Users.id==message.chat.id).exists():
 		Users.create(id=message.chat.id)
-	await message.reply("Я буду отправлять твои сообщения всем юзерам")
+	await message.reply("Я буду надсилати твої повідомлення всім юзерам")
 
 async def send(message, *args, **kwargs):
 	return (await message.copy_to(*args, **kwargs)), args[0]
@@ -165,7 +165,7 @@ async def any(message: Message):
 	if datetime.now() < Users.get(Users.id==message.chat.id).mute and not Admins.get_or_none(id=message.chat.id):
 		delay = Users.get(Users.id==message.chat.id).mute - datetime.now()
 		dur = str(delay).split(".")[0]
-		return await message.reply(f"Ты уже отправлял сообщение, вернись через <code>{dur}</code>")
+		return await message.reply(f"Ти вже відправляв повідомлення, повернися через <code>{dur}</code>")
 	keyboard = InlineKeyboardMarkup()
 	if Users.get(Users.id==message.chat.id).name:
 		name = Users.get(Users.id==message.chat.id).name
@@ -178,11 +178,11 @@ async def any(message: Message):
 		reply_data = get_reply_data(message.chat.id, message.reply_to_message.message_id)
 	if message.text or message.caption:
 		if Users.get(Users.id==message.chat.id).last_msg == (message.text or message.caption):
-			return await message.reply("Нельзя отправлять сообщения с одинаковым текстом")
+			return await message.reply("Не можна надсилати повідомлення з однаковим текстом")
 		Users.update(last_msg=message.text or message.caption).where(Users.id==message.chat.id).execute()
 	if is_flood(message.chat.id):
 		Users.update(mute=datetime.now() + timedelta(hours=1)).where(Users.id==message.chat.id).execute()
-		ims = await message.reply("Ты замьючен на <code>1:00:00</code> за флуд")
+		ims = await message.reply("Тебе зам'ючено на <code>1:00:00</code> за флуд")
 		await bot.pin_chat_message(ims.chat.id, ims.message_id)
 		await bot.unpin_chat_message(ims.chat.id, ims.message_id)
 		try:
@@ -191,9 +191,9 @@ async def any(message: Message):
 			)
 		except: pass
 		return
-	haha = await message.reply("Отправляю...")
+	haha = await message.reply("Відправляю...")
 	asyncio.create_task(
 		Send(message, keyboard, reply_data if message.reply_to_message else None)
 	)
-	await haha.edit_text("Сообщение отправлено всем")
+	await haha.edit_text("Повідомлення надіслано всім")
 	await haha.delete()

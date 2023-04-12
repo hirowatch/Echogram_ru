@@ -17,14 +17,14 @@ def get_rights_keyboard(me_id):
 	return markup
 
 strings = {
-	"no_reply": "А где реплай?",
-	"no_rights": "Нет прав",
+	"no_reply": "А де реплай?",
+	"no_rights": "Немає прав",
 	"purging": "Очищаю...",
-	"no_msg": "Не найдено в DB",
-	"purged": "Очистка завершена",
+	"no_msg": "Не знайдено в DB",
+	"purged": "Очищення завершено",
 	"id": "<a href=\"tg://user?id={0}\">ID:</a> <code>{0}</code>",
-	"is_adm": "Он уже админ",
-	"no_adm": "Он не админ",
+	"is_adm": "Він уже адмін",
+	"no_adm": "Він не адмін",
 }
 
 @dp.message_handler(commands=["admin"])
@@ -32,8 +32,8 @@ async def me_info(message: Message):
 	if not Admins.get_or_none(id=message.chat.id):
 		return
 
-	keyb = InlineKeyboardMarkup().add(InlineKeyboardButton("Возможности", callback_data="rights"))
-	await message.reply(f"Твоя должность: <code>{Admins.get(id=message.chat.id).name}</code>", reply_markup=keyb)
+	keyb = InlineKeyboardMarkup().add(InlineKeyboardButton("Можливості", callback_data="rights"))
+	await message.reply(f"Твоя посада: <code>{Admins.get(id=message.chat.id).name}</code>", reply_markup=keyb)
 
 
 @dp.callback_query_handler(text="rights")
@@ -43,7 +43,7 @@ async def get_rights(call: CallbackQuery):
 
 	keyboard = get_rights_keyboard(call.message.chat.id)
 	keyboard.add(InlineKeyboardButton("Назад", callback_data="back_in_admin"))
-	await call.message.edit_text("Твои возможности:", reply_markup=keyboard)
+	await call.message.edit_text("Твої можливості:", reply_markup=keyboard)
 
 
 @dp.callback_query_handler(text="n")
@@ -65,8 +65,8 @@ async def back_in_admin(call: CallbackQuery):
 	if not Admins.get_or_none(id=call.message.chat.id):
 		return
 
-	keyb = InlineKeyboardMarkup().add(InlineKeyboardButton("Возможности", callback_data="rights"))
-	await call.message.edit_text(f"Твоя должность: <code>{Admins.get(id=call.message.chat.id).name}</code>", reply_markup=keyb)
+	keyb = InlineKeyboardMarkup().add(InlineKeyboardButton("Можливості", callback_data="rights"))
+	await call.message.edit_text(f"Твоя посада: <code>{Admins.get(id=call.message.chat.id).name}</code>", reply_markup=keyb)
 
 
 @dp.message_handler(commands=["purge"])
@@ -90,7 +90,7 @@ async def purge(message: Message):
 
 	user_id = get_reply_sender(message.chat.id, message.reply_to_message.message_id)
 	if message.chat.id == user_id:
-		return await message.reply("Свои сообщения нельзя удалять")
+		return await message.reply("Свої повідомлення не можна видаляти")
 
 	if not user_id:
 		return await message.reply(strings["no_msg"])
@@ -115,12 +115,12 @@ async def purge(message: Message):
 	try:
 		USER = await bot.get_chat(user_id)
 		await bot.send_message(-100nnnnnnnnnn,
-			f"#PURGE\n<b>Админ:</b> <a href='{get_mention(mj.chat)}'>{mj.chat.full_name}</a>\n<b>Причина:</b> {'null' if not reason else reason}\n<b>Юзер:</b> <a href='{get_mention(USER)}'>{USER.full_name}</a>\n<b>Сообщение:</b>"
+			f"#PURGE\n<b>Адмін:</b> <a href='{get_mention(mj.chat)}'>{mj.chat.full_name}</a>\n<b>Причина:</b> {'null' if not reason else reason}\n<b>Юзер:</b> <a href='{get_mention(USER)}'>{USER.full_name}</a>\n<b>Повідомлення:</b>"
 		)
 		await bot.forward_message(chat_id=-100nnnnnnnnnn, from_chat_id=user_id, message_id=get_reply_id(replies, user_id))
 	except: pass
 
-	ims = await bot.send_message(user_id, f"Твоё сообщение удалено" + (f" по причине: <code>{reason}</code>" if reason else ""), reply_to_message_id=reply_msg_id, reply_markup=keyboard)
+	ims = await bot.send_message(user_id, f"Твоє повідомлення видалено" + (f" через: <code>{reason}</code>" if reason else ""), reply_to_message_id=reply_msg_id, reply_markup=keyboard)
 
 	await bot.pin_chat_message(ims.chat.id, ims.message_id)
 	await bot.unpin_chat_message(ims.chat.id, ims.message_id)
@@ -152,7 +152,7 @@ async def promote(message: Message):
 
 	args = message.get_args().split()
 	if len(args) < 2:
-		return await message.reply("Нет аргументов\nПример: /promote Админ mute\;purge")
+		return await message.reply("Немає аргументів\nПриклад: /promote Адмін mute\;purge")
 	name = args[0]
 	rights = args[1]
 	replies = get_reply_data(message.chat.id, message.reply_to_message.message_id)
@@ -163,11 +163,11 @@ async def promote(message: Message):
 	if Admins.get_or_none(id=id):
 		return await message.reply(strings["is_adm"])
 	Admins.create(id=id, name=name, rights=rights)
-	await message.reply("Успешно")
+	await message.reply("Успішно")
 
 	keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=f"{Admins.get(id=message.chat.id).name}: {message.chat.full_name}", url="tg://openmessage?user_id=%s" % message.chat.id))
 
-	ims = await bot.send_message(id, f"Ты был поставлен на должность: <code>{name}</code>\nАдмин-панель\/подробнее: /admin", reply_markup=keyboard, reply_to_message_id=get_reply_id(replies, id))
+	ims = await bot.send_message(id, f"Тебе було поставлено на посаду: <code>{name}</code>\nАдмін-панель\/докладніше: /admin", reply_markup=keyboard, reply_to_message_id=get_reply_id(replies, id))
 	await bot.pin_chat_message(ims.chat.id, ims.message_id)
 	await bot.unpin_chat_message(ims.chat.id, ims.message_id)
 
@@ -192,11 +192,11 @@ async def demote(message: Message):
 
 	dolj = Admins.get(id=id).name
 	Admins.delete().where(Admins.id==id).execute()
-	await message.reply("Успешно")
+	await message.reply("Успішно")
 
 	keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=f"{Admins.get(id=message.chat.id).name}: {message.chat.full_name}", url="tg://openmessage?user_id=%s" % message.chat.id))
 
-	ims = await bot.send_message(id, f"Ты был снят с должности: <code>{dolj}</code>" + (f" по причине: <code>{reason}</code>" if reason else ""), reply_markup=keyboard)
+	ims = await bot.send_message(id, f"Тебе було знято з посади: <code>{dolj}</code>" + (f" через: <code>{reason}</code>" if reason else ""), reply_markup=keyboard)
 	await bot.pin_chat_message(ims.chat.id, ims.message_id)
 	await bot.unpin_chat_message(ims.chat.id, ims.message_id)
 
@@ -221,21 +221,21 @@ async def mute(message: Message):
 		return await message.reply(f"{error}")
 
 	if not duration and not reason:
-		await message.reply("Нет аргументов\nПример: /mute 1ч30м спам")
+		await message.reply("Немає аргументів\nПриклад: /mute 1ч30м спам")
 
 	Users.update(mute=Users.get(Users.id==sender_id).mute + duration).where(Users.id==sender_id).execute()
 
-	await message.reply("Успешно")
+	await message.reply("Успішно")
 	keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=f"{Admins.get(id=message.chat.id).name}: {message.chat.full_name}", url=get_mention(message.chat)))
 
 	try:
 		USER = await bot.get_chat(sender_id)
 		await bot.send_message(-100nnnnnnnnnn,
-			f"#MUTE\n<b>Админ:</b> <a href='{get_mention(message.chat)}'>{message.chat.full_name}</a>\n<b>Причина:</b> {'null' if not reason else reason}\n<b>Юзер:</b> <a href='{get_mention(USER)}'>{USER.full_name}</a>\n<b>Время:</b> {duration}"
+			f"#MUTE\n<b>Адмін:</b> <a href='{get_mention(message.chat)}'>{message.chat.full_name}</a>\n<b>Причина:</b> {'null' if not reason else reason}\n<b>Юзер:</b> <a href='{get_mention(USER)}'>{USER.full_name}</a>\n<b>Час:</b> {duration}"
 		)
 	except: pass
 
-	ims = await bot.send_message(sender_id, f"Ты был замьючен на <code>{duration}</code>" + (f" по причине: <code>{reason}</code>" if reason else ""), reply_markup=keyboard, reply_to_message_id=get_reply_id(replies, sender_id))
+	ims = await bot.send_message(sender_id, f"Ти був зам'ючений на <code>{duration}</code>" + (f" з причини: <code>{reason}</code>" if reason else ""), reply_markup=keyboard, reply_to_message_id=get_reply_id(replies, sender_id))
 	await bot.pin_chat_message(ims.chat.id, ims.message_id)
 	await bot.unpin_chat_message(ims.chat.id, ims.message_id)
 
@@ -263,9 +263,9 @@ async def unmute(message: Message):
 
 	Users.update(mute=datetime.now()).where(Users.id==sender_id).execute()
 
-	await message.reply("Успешно")
+	await message.reply("Успішно")
 	keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=f"{Admins.get(id=message.chat.id).name}: {message.chat.full_name}", url=get_mention(message.chat)))
 
-	ims = await bot.send_message(sender_id, f"Ты был размьючен", reply_markup=keyboard, reply_to_message_id=get_reply_id(replies, sender_id))
+	ims = await bot.send_message(sender_id, f"Ти був розм'ючений", reply_markup=keyboard, reply_to_message_id=get_reply_id(replies, sender_id))
 	await bot.pin_chat_message(ims.chat.id, ims.message_id)
 	await bot.unpin_chat_message(ims.chat.id, ims.message_id)

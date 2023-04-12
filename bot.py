@@ -10,12 +10,12 @@ class Notification():
 	async def on(self, dp):
 		for admin in self.admins:
 			try:
-				await bot.send_message(admin, f"{self.date}: Бот запущен")
+				await bot.send_message(admin, f"{self.date}: Бот запущено")
 			except: pass
 	async def off(self, dp):
 		for admin in self.admins:
 			try:
-				await bot.send_message(admin, f"{self.date}: Бот остановлен")
+				await bot.send_message(admin, f"{self.date}: Бот зупинено")
 			except: pass
 
 if __name__ == "__main__":
