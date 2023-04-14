@@ -167,7 +167,7 @@ async def promote(message: Message):
 
 	keyboard = InlineKeyboardMarkup().add(InlineKeyboardButton(text=f"{Admins.get(id=message.chat.id).name}: {message.chat.full_name}", url="tg://openmessage?user_id=%s" % message.chat.id))
 
-	ims = await bot.send_message(id, f"Тебе було поставлено на посаду: <code>{name}</code>\nАдмін-панель\/докладніше: /admin", reply_markup=keyboard, reply_to_message_id=get_reply_id(replies, id))
+	ims = await bot.send_message(id, f"Тебе було поставлено на посаду: <code>{name}</code>\nАдмін-панель: /admin", reply_markup=keyboard, reply_to_message_id=get_reply_id(replies, id))
 	await bot.pin_chat_message(ims.chat.id, ims.message_id)
 	await bot.unpin_chat_message(ims.chat.id, ims.message_id)
 
